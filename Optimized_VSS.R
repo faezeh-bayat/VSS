@@ -7,6 +7,7 @@ getExtension <- function(file){
 #--------------------Train the mean-variance relationship from the user provided replicates-----------
 VSS_train <- function(args)
 {
+  start_time <- Sys.time()
   path <- paste(getwd(),"/",args[4],sep="")
   dir.create(path)
   #------------ Getting the interval intersections of two input replicates--------------
@@ -23,8 +24,8 @@ VSS_train <- function(args)
     system(paste("rm ",path,"/rep1_train_model.bedGraph",sep=""))
     system(paste("rm ",path,"/rep2_train_model.bedGraph",sep=""))
   }else if(getExtension(args[2])=="bam"){
-    system(paste("bedtools genomecov -ibam" ,args[2], "-bga >",path, "/rep1_train_model.bedGraph"))
-    system(paste("bedtools genomecov -ibam" ,args[3], "-bga >",path, "/rep2_train_model.bedGraph"))
+    system(paste("bedtools genomecov -ibam " ,args[2], " -bga >",path, "/rep1_train_model.bedGraph",sep=""))
+    system(paste("bedtools genomecov -ibam " ,args[3], " -bga >",path, "/rep2_train_model.bedGraph",sep=""))
     system(paste("bedops --partition ",path,"/rep1_train_model.bedGraph ",path,"/rep2_train_model.bedGraph >", path, "/intersect_intervals.bed",sep=""))
     system(paste("bedtools closest -a ",path,"/intersect_intervals.bed -b ",path,"/rep1_train_model.bedGraph >",path,"/rep1_scores_closest.bed",sep=""))
     system(paste("bedtools closest -a ",path,"/intersect_intervals.bed -b ",path,"/rep2_train_model.bedGraph >",path,"/rep2_scores_closest.bed",sep=""))
@@ -93,7 +94,8 @@ VSS_train <- function(args)
   save(Mean_1_over_sigma,file=paste(path,"/Trained_mean_variance_model.Rdata",sep=""))
   write.table(Mean_1_over_sigma, file=paste(path,"/Trained_mean_variance_model.bedGraph",sep=""), quote=F, sep="\t", row.names=F, col.names=F)
   write.table(Mean_1_over_sigma, file=paste(path,"/Trained_mean_variance_model.bed",sep=""), quote=F, sep="\t", row.names=F, col.names=F)
-  
+  end_time <- Sys.time()
+  print(end_time - start_time)
 }
 #------------------Identifying the mean-variance relationship-------------
 Weighted_Mean_1_over_sigma<-function(distance,bin,alpha,ordered_scores)
@@ -357,11 +359,22 @@ if(args[1]=="train"){
   VSS_transform(args)
 }
 #args=c("train","rep1.bed","rep2.bed","traindir")
-args=c("train","whole_rep1.bedGraph","whole_rep2.bedGraph","traindir")
-args=c("transform","ENCFF231JPM.bam","gm","gm2")
+#args=c("train","whole_rep1.bedGraph","whole_rep2.bedGraph","traindir")
+#args=c("transform","ENCFF231JPM.bam","gm","gm2")
 #args=c("train","rep1.bed","traindir","transformdir")
 #Rscript Optimized_VSS.R train rep1.bed rep2.bed traindir
 #Rscript Optimized_VSS.R transform rep1.bed traindir transformdir
 
 #Rscript Optimized_VSS.R train whole_rep1.bedGraph whole_rep2.bedGraph traindir
 #Rscript Optimized_VSS.R transform whole_rep1.bedGraph traindir transformdir
+
+
+# Rscript Optimized_VSS.R train raw_rep1.bam raw_rep1.bam rawtraindir
+# Rscript Optimized_VSS.R transform raw_rep1.bam rawtraindir rawtransformdir
+# 
+# Rscript Optimized_VSS.R train fold_rep1.bigWig fold_rep1.bigWig foldtraindir
+# Rscript Optimized_VSS.R transform fold_rep1.bam foldtraindir foldtransformdir
+# 
+# Rscript Optimized_VSS.R train pval_rep1.bigWig pval_rep1.bigWig pvaltraindir
+# Rscript Optimized_VSS.R transform pval_rep1.bam pvaltraindir pvaltransformdir
+# 
