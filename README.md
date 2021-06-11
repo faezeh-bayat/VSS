@@ -42,7 +42,7 @@ git clone https://github.com/faezeh-bayat/VSS.git
 As mentioned before, VSS has two main steps: Traing a model and transforming the signals. Before traning and transforming signals, VSS pipeline loads the input replicates to convert all data formats to the compatible version used in the pipeline. 
 
 ```
-$ cd 'Source'
+$ cd VSS/Source
 ```
 
 #### 1. Load the data
