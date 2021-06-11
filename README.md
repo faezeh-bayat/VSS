@@ -1,9 +1,9 @@
-# VSS: Variance-stabilized units for sequencing-based genomic signals
+# VSS: Variance-stabilized signals for sequencing-based genomic signals
 
-## Variance-stabilized signals (VSS) is a signal transformation approach used for eliminating the dependency of data variance from its mean. We generate VSS for sequencing-based genomic signals by learning the empirical relationship between the mean and variance of a given signal data set and producing transformed signals that normalize for this dependence.
+Variance-stabilized signals (VSS) is a signal transformation approach used for eliminating the dependency of data variance from its mean. We generate VSS for sequencing-based genomic signals by learning the empirical relationship between the mean and variance of a given signal data set and producing transformed signals that normalize for this dependence.
 ## Two main steps in VSS pipeline:
-### 1: Training model: Identifying the mean-variance relationship
-There are two different options for this step. It either uses the user provided replicates to identify the mean-variance relationship or uses the default trained model. In the latter case, user just needs to provide the untransformed signals.
+### 1: Training a model: Identifying the mean-variance relationship
+VSS identifies the mean-varaince relationship by using the user provided replicates for an experiment. It needs two replicates for identifying the mentioned relationship.
 ### 2: Transforming signals: Calculating variance-stabilized signals
 Having learned the mean-variance relationship, VSS can be generated using the variance-stabilizing transformation. 
 
@@ -11,7 +11,7 @@ Having learned the mean-variance relationship, VSS can be generated using the va
 
 <img src="https://github.com/faezeh-bayat/Variance-stabilized-units-for-sequencing-based-genomic-signals/blob/master/bin/VSS_general_schematic/VSS_schematic.png" width="800"/>
 
-#####################################################################################
+
 
 ## Prerequisites
 ```
@@ -24,16 +24,25 @@ conda install -c bioconda ucsc-bedclip
 conda install -c bioconda ucsc-bedgraphtobigwig
 conda install -c bioconda ucsc-bigwigtobedgraph
 
+(You can also directly use the ucsc applications by getting them from "http://hgdownload.soe.ucsc.edu/admin/exe/")
+chmod +x ./filePath/utility_name
+./filePath/utility_name
+
 bedtools
 ######(https://bedtools.readthedocs.io/en/latest/content/installation.html)
 ```
 
 ## Installing VSS pipeline
 ```
-git clone https://github.com/faezeh-bayat/Variance-stabilized-units-for-sequencing-based-genomic-signals.git
+git clone https://github.com/faezeh-bayat/VSS.git
 ```
 
 ## How to run VSS pipeline
+As mentioned before, VSS has two main steps: Traing a model and transforming the signals. Before traning and transforming signals, VSS pipeline loads the input replicates to convert all data formats to the compatible version used in the pipeline. 
+
+#### 1. Load the data
+Input replicates can be in any of bed, bedGraph, bigWig or bam format. In the case that data are in the bam format (tag alignment data), you have multiple options. You can either convert the bam file to raw signals or you can convert them to any of "Fold enrichment (fc)" or "p-value (pval)" signals. We seperate these two conditions as you need to provide more arguments to pipeline to convert the bam file to either of fc or pval signals. We use ENCODE's default parameters for calculating the fc/pval signals.
+
 #### 1. Train the model
 ##### 1.1 Replicates in bed, bedGraph, bigWig format
 ```
