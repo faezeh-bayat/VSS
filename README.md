@@ -57,13 +57,15 @@ Rscript VSS.R load_inputs rep1.bam rep2.bam --signal "raw" --inputdir "path/inpu
 
 If you want to convert bam file to any of fc or pval signals:
 ```
-Rscript VSS.R load_inputs rep1.bam --fraglen1 200 rep2.bam --fraglen2 300 --chrsz "https://github.com/faezeh-bayat/VSS/tree/main/bin/chrsz.txt" --gensz "hs" --signal "fc" --inputdir "path/inputdir"
-
- --fraglen1 <Fragment length for replicate 1> 
- --fraglen2 <Fragment length for replicate 2> 
- --chrsz <2-col chromosome sizes file> 
- --gensz <hs, mm> 
- --signal <fc, pval> 
+Rscript VSS.R load_inputs rep1.bam \
+                          --fraglen1 <Fragment length for replicate 1> \
+                          rep2.bam \ 
+                          --fraglen2 <Fragment length for replicate 2> \
+                          --chrsz <2-col chromosome sizes file> 
+                          --gensz <hs, mm> \
+                          --signal <fc, pval> \
+                          --inputdir "path/inputdir"
+                      
 
 
 ```
@@ -112,9 +114,37 @@ Rscript VSS.R transform rep1.bam --signal <fc, pval> --inputdir "path/inputdir" 
 ```
 
 
-#### 3. Variance-stabilized signals will be saved in the tranformdir folder as "Variance_stabilized_signals.bed".
+#### 4. Variance-stabilized signals will be saved in the tranformdir folder as "Variance_stabilized_signals.bed".
 
 
+#### Examples
+You have your replicates in .bedGraph format:
+```
+Rscript VSS.R load_inputs rep1.bedGraph rep2.bedGraph --inputdir "inputdir"
+Rscript VSS.R train rep1.bedGraph rep2.bedGraph --inputdir "inputdir" --traindir "traindir"
+Rscript VSS.R transform rep1.bedGraph --inputdir "inputdir" --traindir "traindir" --transformdir "tranformdir"
+
+```
+
+You have .bam file input and you want to transform the fc signals:
+```
+Rscript VSS.R load_inputs rep1.bam --fraglen1 200 rep2.bam --fraglen2 300 --chrsz "https://github.com/faezeh-bayat/VSS/tree/main/bin/chrsz.txt" --gensz "hs" --signal "fc" --inputdir "inputdir"
+
+Rscript VSS.R train rep1.bam rep2.bam --signal="fc" --inputdir "inputdir" --traindir "traindir"
+
+Rscript VSS.R transform rep1.bam --signal="fc" --inputdir "inputdir" --traindir "traindir" --transformdir "tranformdir"
+
+```
+
+You have .bam file input and you want to transform the raw signals:
+```
+Rscript VSS.R load_inputs rep1.bam rep2.bam --signal "raw" --inputdir "inputdir"
+
+Rscript VSS.R train rep1.bam rep2.bam --signal "raw" --inputdir "inputdir" --traindir "traindir"
+
+Rscript VSS.R transform rep1.bam --signal "raw" --inputdir "inputdir" --traindir "traindir" --transformdir "tranformdir"
+
+```
 
 
 #### You can accesee the "Variance-stabilized units for sequencing-based genomic signals" manuscript in:
