@@ -43,6 +43,31 @@ As mentioned before, VSS has two main steps: Traing a model and transforming the
 #### 1. Load the data
 Input replicates can be in any of bed, bedGraph, bigWig or bam format. In the case that data are in the bam format (tag alignment data), you have multiple options. You can either convert the bam file to raw signals or you can convert them to any of "Fold enrichment (fc)" or "p-value (pval)" signals. We seperate these two conditions as you need to provide more arguments to pipeline to convert the bam file to either of fc or pval signals. We use ENCODE's default parameters for calculating the fc/pval signals.
 
+##### Replicates are in bed, bedGraph, bigWig format
+```
+Rscript VSS.R load_inputs rep1 <bed, bedGraph, bigWig> rep2 <bed, bedGraph, bigWig> --inputdir "path/inputdir"
+
+```
+##### Replicates are in bam format
+If you want to convert bam file to raw signals:
+```
+Rscript VSS.R load_inputs rep1.bam rep2.bam --signal "raw" --inputdir "path/inputdir"
+
+```
+
+If you want to convert bam file to any of fc or pval signals:
+```
+Rscript VSS.R load_inputs rep1.bam --fraglen1 200 rep2.bam --fraglen2 300 --chrsz "https://github.com/faezeh-bayat/VSS/tree/main/bin/chrsz.txt" --gensz "hs" --signal "fc" --inputdir "path/inputdir"
+
+ --fraglen1 <Fragment length for replicate 1> 
+ --fraglen2 <Fragment length for replicate 2> 
+ --chrsz <2-col chromosome sizes file> 
+ --gensz <hs, mm> 
+ --signal <fc, pval> 
+
+
+```
+
 #### 1. Train the model
 ##### 1.1 Replicates in bed, bedGraph, bigWig format
 ```
