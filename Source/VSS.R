@@ -561,7 +561,7 @@ VSS_transform <- function(args){
   Replicate1_scores <- Calculating_vss_signals(Mean_1_over_sigma,instabilized_replicate_signals)
   end_t <- Sys.time()
   print(end_t - start_t)
-  write.table(Replicate1_scores, file=paste(transform_path,"/Variance_stabilized_signals.bed",sep=""), quote=F, sep="\t", row.names=F, col.names=F)
+  write.table(Replicate1_scores, file=paste(transform_path,"/Variance_stabilized_signals.bedGraph",sep=""), quote=F, sep="\t", row.names=F, col.names=F)
   
 }
 
