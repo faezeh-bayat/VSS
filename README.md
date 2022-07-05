@@ -149,8 +149,9 @@ Rscript VSS.R transform rep1.bam --signal "raw" --inputdir "inputdir" --traindir
 
 
 #### You can accesee the "VSS: Variance-stabilized signals for sequencing-based genomic signals" manuscript in:
-https://www.biorxiv.org/content/10.1101/2020.01.31.929174v2
+https://academic.oup.com/bioinformatics/article/37/23/4383/6308936
 
 ## Troubleshooting
-Please contact me at fbayat@sfu.ca if you face any errors. I will constantly update this document for errors reported by users.
+Please contact us at fbayat@sfu.ca if you face any errors. I will constantly update this document for errors reported by users.
+You can also contact maxwl@sfu.ca for more detail about VSS.
 
